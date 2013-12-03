@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Publications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peter H. Sudmant's personal web page">
+    <meta name="author" content="Peter Sudmant">
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 80px; /* Only include this for the fixed top bar */
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400, 600' rel='stylesheet' type='text/css'>
+    <link href='css/retriever.css' rel='stylesheet' type='text/css'>
+    
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <script src="js/jquery.min.js"></script>
+  <script src="./js/handlebars.js"></script>
+  <script src="./js/handlebars.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <body>        
+          
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./index.html">Peter H. Sudmant<i class="icon-leaf icon-white"></i></a>          
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              <li><a href="./index.html"> Home</a></li>
+              <li class="active"><a href="./Publications.html">Publications</a></li>
+              <li><a href="./CV.html">CV</a></li>
+                
+                  <li class="dropdown">
+                    <a href="test.hml" class="dropdown-toggle" data-toggle="dropdown">projects<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li class="nav-header">PersonalProjects</li>
+                      <li><a tabindex="-1" href="#">Coming Soon!</a></li>
+                    </ul>
+                  </li>
+              <li><a href="https://twitter.com/psudmant">Twitter</a></li>
+              <li><a href="https://github.com/psudmant">GitHub</a></li>
+              <li><a href="mailto:psudmant@gmail.com"><i class="icon-envelope icon-white"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script id="publications_tmplt" type="text/html">       
+      <div class="container">
+        <br>
+        <h1>Publications</h1>
+        <hr>
+        <div class="span10 offset1">
+          <p><b>* indicates equal contribution</b></p>
+          <h3>2013</h3>
+          <p align="justify">
+          Hormozdiari F, Konkel MK, Prado-Martinez J, Chiatante G, Herraez IH, Walker JA, Nelson B, Alkan C, <b>Sudmant PH</b>, Huddleston J, Catacchio CR, Ko A, Malig M, Baker C, Marques-Bonet T, Ventura M, Batzer MA and Eichler EE. Rates and Patterns of Great Ape Retrotransposition. <i>PNAS</i>. 2013 in press
+          </a>
+          
+          {{#each PubmedArticle}}<p align="justify">
+            {{{year_header MedlineCitation.PMID.[#text]}}}
+            {{#each MedlineCitation.Article.AuthorList.Author}} 
+            {{#if CollectiveName}}
+              {{CollectiveName}}, 
+            {{else}}
+              {{{author_list LastName Initials}}},
+            {{/if}}
+            {{/each}} 
+
+            {{MedlineCitation.Article.ArticleTitle}}
+            {{MedlineCitation.DateCreated.Year}}.
+            <i>{{MedlineCitation.Article.Journal.Title}}</i>
+             - <a href='http://www.ncbi.nlm.nih.gov/pubmed/{{MedlineCitation.PMID.[#text]}}'> {{MedlineCitation.PMID.[#text]}}.</a>
+            </p>
+          {{/each}}
+          </div>
+      </div>
+       
+    </script>
+     
+    <script>
+      var my_json = (function () {
+        var json = null;
+        $.ajax({
+            'async': false,
+            'global': false,
+            'url': "./content/sudmant_papers_20130607.json",
+            'dataType': "json",
+            'success': function (data) {
+                json = data;
+            }
+        });
+      return json;
+      })(); 
+
+    var my_json_test = {
+      "PubmedArticle": [
+        {"A":{"ArticleTitle": "Home"}},
+        {"A":{"ArticleTitle": "Publications"}},
+        {"A":{"ArticleTitle": "CV"}}
+      ]
+    }; 
+    
+    Handlebars.registerHelper('year_header', function(PMID) {
+        if (PMID==="23001126"){
+          return "<h3>"+2012+"</h3>"  
+        }else if (PMID==="21397061"){
+          return "<h3>"+2011+"</h3>"  
+        }else if (PMID==="21030649"){
+          return "<h3>"+2010+"</h3>"  
+        }
+        
+    });
+
+    Handlebars.registerHelper('author_list', function(LastName, Initials) {
+
+      if(LastName === 'Sudmant') {
+        return "<b>"+LastName+" "+Initials+"</b>"
+      } else {
+        return LastName+" "+Initials
+      }  
+    });
+    
+    var html_temp=$('#publications_tmplt').html();
+    template=Handlebars.compile(html_temp);
+    document.write(template(my_json));
+      
+    $(document).ready(function () {
+        $('ul.nav > li').click(function (e) {
+            $('ul.nav > li').removeClass('active');
+            $(this).addClass('active');                
+        });            
+    });
+    
+    </script>
+  </body>
+</html>

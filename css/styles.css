@@ -1,0 +1,6 @@
+
+.dropdown .dropdown-toggle > .active > a,.dropdown .dropdown-toggle > .active > a:focus{
+
+	background-color: #222
+	color: #222
+}

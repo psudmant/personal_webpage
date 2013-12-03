@@ -1,0 +1,12 @@
+{
+	"header": [
+		{"name": "Home"},
+		{"name": "Publications"},
+		{"name": "CV"},
+		{"name": "d3.js genetics"},
+		{"name": "Twitter"},
+		{"name": "GitHub"},
+		{"name": "Contact"}
+	]
+
+} 
